@@ -29,24 +29,25 @@ async function run() {
 
  while (day) {
   if (date.getDay() > 0 && date.getDay() < 6) {
+    
     await page.waitFor(5000);
     const logWorkButton = await frames.$('[name=logWorkButton]');
     await page.waitFor(1000);
     logWorkButton.click();
-    await page.waitFor(2000);
-
+    
+    await frames.waitForSelector('#issuePickerInput');
     const searchIssue = await frames.$('#issuePickerInput');
     searchIssue.click();
 
-    await page.waitFor(2000);
+    await frames.waitForSelector('#assigned');
     const assigned = await frames.$('#assigned');
     assigned.click();
 
-    await page.waitFor(15000);
+    await frames.waitForSelector('.kPwaDr');
     const firstTicket = await frames.$('.kPwaDr');
     firstTicket.click();
 
-    await page.waitFor(5000);
+    await frames.waitForSelector('#started');
     const started = await frames.$('#started');
     await page.waitFor(1000);
     started.focus();
@@ -65,7 +66,7 @@ async function run() {
     workedInput.focus();
     await page.keyboard.type('8');
 
-    await page.waitFor(2000);
+    await frames.waitForSelector('#worklogForm .tuiButton--primary');
     const logWorkSubmitButton = await frames.$('#worklogForm .tuiButton--primary');
     logWorkSubmitButton.click();
   }
