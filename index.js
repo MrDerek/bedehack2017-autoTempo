@@ -21,9 +21,37 @@ async function run() {
   await page.type('#password', settings.password);
   await page.waitFor(3000);
   await page.click('#login-submit');
+  await page.waitFor(15000);
+ 
+ const frames = page.frames()[1];
+
+ const logWorkButton = await frames.$('[name=logWorkButton]');
+  await page.waitFor(1000);
+  logWorkButton.click();
+  await page.waitFor(2000);
+
+  const searchIssue = await frames.$('#issuePickerInput');
+  searchIssue.click();
+
+  await page.waitFor(2000);
+  const assigned = await frames.$('#assigned');
+  assigned.click();
+
   await page.waitFor(10000);
-  await page.click('[name="logWorkButton"]');
-  await page.waitFor(3000);
+  const firstTicket = await frames.$('.kPwaDr');
+  firstTicket.click();
+
+  await page.waitFor(5000);
+  const workedInput = await frames.$('#timeSpentSeconds');
+  await page.waitFor(1000);
+  workedInput.focus();
+  await page.keyboard.type('8');
+
+  await page.waitFor(2000);
+  const logWorkSubmitButton = await frames.$('#worklogForm .tuiButton--primary');
+  logWorkSubmitButton.click();
+
+  await page.waitFor(5000);
   browser.close();
 }
 run();
