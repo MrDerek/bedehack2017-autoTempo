@@ -10,8 +10,11 @@ async function run() {
   await page.setViewport({width: 1024, height: 768});
   await page.goto('https://bedegaming.atlassian.net/plugins/servlet/ac/is.origo.jira.tempo-plugin/tempo-my-work#!/timesheet/', {waitUntil: 'networkidle'});
 
-
-  await page.waitFor(5000);
-  browser.close();
+  await page.click('.login-link');
+  await page.waitForSelector('#username');
+  await page.type('#username', settings.email);
+  await page.click('#login-submit');
+  await page.type('#password', settings.password);
+  await page.click('#login-submit');
 }
 run();
