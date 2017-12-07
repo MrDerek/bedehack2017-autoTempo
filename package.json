@@ -1,13 +1,11 @@
 {
-  "name": "autoTempo",
+  "name": "bedehack2017-autoTempo",
   "version": "0.0.1",
   "description": "Automate tempo with puppeteer",
   "main": "index.js",
   "author": "Derek, Venkata",
   "license": "ISC",
   "dependencies": {
-    "es6-promise": "^4.1.1",
-    "eslint": "^4.11.0",
     "puppeteer": "^0.12.0"
   }
 }
