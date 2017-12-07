@@ -24,10 +24,11 @@ async function run() {
   await page.waitFor(15000);
  
  const frames = page.frames()[1];
- let day = new Date().getDate();
+ const date = new Date();
+ let day = date.getDate();
 
  while (day) {
-  if (new Date().getDay < 6) {
+  if (date.getDay() > 0 && date.getDay() < 6) {
     await page.waitFor(5000);
     const logWorkButton = await frames.$('[name=logWorkButton]');
     await page.waitFor(1000);
@@ -69,7 +70,9 @@ async function run() {
     logWorkSubmitButton.click();
   }
 
-   day--;
+
+  date.setDate(date.getDate() - 1);
+  day--;
  }
 
   await page.waitFor(5000);
