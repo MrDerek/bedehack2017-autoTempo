@@ -24,32 +24,53 @@ async function run() {
   await page.waitFor(15000);
  
  const frames = page.frames()[1];
+ let day = new Date().getDate();
 
- const logWorkButton = await frames.$('[name=logWorkButton]');
-  await page.waitFor(1000);
-  logWorkButton.click();
-  await page.waitFor(2000);
+ while (day) {
+  if (new Date().getDay < 6) {
+    await page.waitFor(5000);
+    const logWorkButton = await frames.$('[name=logWorkButton]');
+    await page.waitFor(1000);
+    logWorkButton.click();
+    await page.waitFor(2000);
 
-  const searchIssue = await frames.$('#issuePickerInput');
-  searchIssue.click();
+    const searchIssue = await frames.$('#issuePickerInput');
+    searchIssue.click();
 
-  await page.waitFor(2000);
-  const assigned = await frames.$('#assigned');
-  assigned.click();
+    await page.waitFor(2000);
+    const assigned = await frames.$('#assigned');
+    assigned.click();
 
-  await page.waitFor(10000);
-  const firstTicket = await frames.$('.kPwaDr');
-  firstTicket.click();
+    await page.waitFor(15000);
+    const firstTicket = await frames.$('.kPwaDr');
+    firstTicket.click();
 
-  await page.waitFor(5000);
-  const workedInput = await frames.$('#timeSpentSeconds');
-  await page.waitFor(1000);
-  workedInput.focus();
-  await page.keyboard.type('8');
+    await page.waitFor(5000);
+    const started = await frames.$('#started');
+    await page.waitFor(1000);
+    started.focus();
+    await page.waitFor(1000);
 
-  await page.waitFor(2000);
-  const logWorkSubmitButton = await frames.$('#worklogForm .tuiButton--primary');
-  logWorkSubmitButton.click();
+    for (var i = new Date().getDate(); i > day; i--) {
+      await page.keyboard.press('ArrowLeft');
+    }
+
+    await page.waitFor(1000);
+    await page.keyboard.press('Enter');
+
+    await page.waitFor(1000);
+    const workedInput = await frames.$('#timeSpentSeconds');
+    await page.waitFor(1000);
+    workedInput.focus();
+    await page.keyboard.type('8');
+
+    await page.waitFor(2000);
+    const logWorkSubmitButton = await frames.$('#worklogForm .tuiButton--primary');
+    logWorkSubmitButton.click();
+  }
+
+   day--;
+ }
 
   await page.waitFor(5000);
   browser.close();
