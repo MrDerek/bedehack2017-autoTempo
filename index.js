@@ -23,60 +23,60 @@ async function run() {
   await page.click('#login-submit');
   await page.waitFor(15000);
  
- const frames = page.frames()[1];
- const date = new Date();
- let day = date.getDate();
+  const frames = page.frames()[1];
+  const date = new Date();
+  let day = date.getDate();
 
- while (day) {
-  if (date.getDay() > 0 && date.getDay() < 6) {
-    
-    await page.waitFor(5000);
-    const logWorkButton = await frames.$('[name=logWorkButton]');
-    await page.waitFor(1000);
-    logWorkButton.click();
-    
-    await frames.waitForSelector('#issuePickerInput');
-    const searchIssue = await frames.$('#issuePickerInput');
-    searchIssue.click();
+  while (day) {
+    if (date.getDay() > 0 && date.getDay() < 6) {
 
-    await frames.waitForSelector('#assigned');
-    const assigned = await frames.$('#assigned');
-    assigned.click();
+      await page.waitFor(5000);
+      const logWorkButton = await frames.$('[name=logWorkButton]');
+      await page.waitFor(1000);
+      logWorkButton.click();
+      
+      await frames.waitForSelector('#issuePickerInput');
+      const searchIssue = await frames.$('#issuePickerInput');
+      searchIssue.click();
 
-    await frames.waitForSelector('.kPwaDr');
-    const firstTicket = await frames.$('.kPwaDr');
-    firstTicket.click();
+      await frames.waitForSelector('#assigned');
+      const assigned = await frames.$('#assigned');
+      assigned.click();
 
-    await frames.waitForSelector('#started');
-    const started = await frames.$('#started');
-    await page.waitFor(1000);
-    started.focus();
-    await page.waitFor(1000);
+      await frames.waitForSelector('.kPwaDr');
+      const firstTicket = await frames.$('.kPwaDr');
+      firstTicket.click();
 
-    for (var i = new Date().getDate(); i > day; i--) {
-      await page.keyboard.press('ArrowLeft');
+      await frames.waitForSelector('#started');
+      const started = await frames.$('#started');
+      await page.waitFor(1000);
+      started.focus();
+      await page.waitFor(1000);
+
+      for (var i = new Date().getDate(); i > day; i--) {
+        await page.keyboard.press('ArrowLeft');
+      }
+
+      await page.waitFor(1000);
+      await page.keyboard.press('Enter');
+
+      await page.waitFor(1000);
+      const workedInput = await frames.$('#timeSpentSeconds');
+      await page.waitFor(1000);
+      workedInput.focus();
+      await page.keyboard.type('8');
+
+      await frames.waitForSelector('#worklogForm .tuiButton--primary');
+      const logWorkSubmitButton = await frames.$('#worklogForm .tuiButton--primary');
+      logWorkSubmitButton.click();
     }
 
-    await page.waitFor(1000);
-    await page.keyboard.press('Enter');
-
-    await page.waitFor(1000);
-    const workedInput = await frames.$('#timeSpentSeconds');
-    await page.waitFor(1000);
-    workedInput.focus();
-    await page.keyboard.type('8');
-
-    await frames.waitForSelector('#worklogForm .tuiButton--primary');
-    const logWorkSubmitButton = await frames.$('#worklogForm .tuiButton--primary');
-    logWorkSubmitButton.click();
+    date.setDate(date.getDate() - 1);
+    day--;
   }
-
-
-  date.setDate(date.getDate() - 1);
-  day--;
- }
 
   await page.waitFor(5000);
   browser.close();
 }
+
 run();
