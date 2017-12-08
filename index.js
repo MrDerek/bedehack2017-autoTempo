@@ -11,7 +11,7 @@ async function run() {
   
   const page = await browser.newPage();
   await page.setViewport({width, height});
-  await page.goto('https://bedegaming.atlassian.net/plugins/servlet/ac/is.origo.jira.tempo-plugin/tempo-my-work#!/timesheet/', {waitUntil: 'networkidle'});
+  await page.goto('https://bedegaming.atlassian.net/plugins/servlet/ac/is.origo.jira.tempo-plugin/tempo-my-work#!/timesheet/', {waitUntil: 'networkidle2'});
 
   await page.click('.login-link');
   await page.waitForSelector('#username');
@@ -19,9 +19,9 @@ async function run() {
   await page.click('#login-submit');
   await page.waitFor(3000);
   await page.type('#password', settings.password);
-  await page.waitFor(3000);
+  await page.waitForSelector('#login-submit');
   await page.click('#login-submit');
-  await page.waitFor(15000);
+  await page.waitForNavigation({waitUntil: 'networkidle2'});
 
   const frames = page.frames()[1];
   const date = new Date();
@@ -39,6 +39,7 @@ async function run() {
       });
 
       if (dayTotal === '0') {
+        await frames.waitForSelector('[name=logWorkButton]');
         const logWorkButton = await frames.$('[name=logWorkButton]');
         await page.waitFor(1000);
         logWorkButton.click();
