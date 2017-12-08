@@ -52,6 +52,12 @@ async function run() {
         assigned.click();
 
         await frames.waitForSelector('.kPwaDr');
+        let randomTicket = parseInt(Math.random() * 4);
+        while (randomTicket) {
+          await page.keyboard.press('ArrowDown');
+          randomTicket--;
+        }
+
         const firstTicket = await frames.$('.kPwaDr');
         firstTicket.click();
 
